@@ -22,3 +22,5 @@ Route::post('createpost','PostController@createpost');
 Route::get('getposts','PostController@getposts');
 Route::put('updatepost/{postid}','PostController@updatepost');
 Route::delete('deletepost/{postid}','PostController@deletepost');
+
+Route::post('register','UserController@register');
