@@ -16,6 +16,23 @@ header{
             display: none;
         }
     }
+
+    .post-actions{
+        li{
+            border: none;
+            padding:0 0 10px;
+        }
+    }
+
+    .comments-box{
+        border-top: 1px solid #81818154;
+        
+        ul{
+            li{
+                border: none;
+            }
+        }
+    }
 }
 
 .login{

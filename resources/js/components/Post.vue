@@ -72,14 +72,14 @@
                     Novo Post
                 </button>
 
-                <div  v-for="post in posts.data" :key="post.id" class="my-3">
+                <div  v-for="post,key in posts.data" :key="post.id" class="my-3">
                     <h4>{{post.title}}</h4>
 
                     <p>{{post.body}}</p>
 
                     <div class="row">
                         <div class="col">
-                            <ul class="list-group list-group-horizontal">
+                            <ul class="list-group list-group-horizontal post-actions">
                                 <li class="list-group-item">
                                     <a class="btn">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-hand-thumbs-up" viewBox="0 0 16 16">
@@ -88,7 +88,7 @@
                                     </a>
                                 </li>
                                 <li class="list-group-item">
-                                    <a class="btn" data-bs-toggle="collapse" href="#collapseComments" role="button" aria-expanded="false" aria-controls="collapseComments">
+                                    <a class="btn">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chat-dots" viewBox="0 0 16 16">
                                             <path d="M5 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
                                             <path d="m2.165 15.803.02-.004c1.83-.363 2.948-.842 3.468-1.105A9.06 9.06 0 0 0 8 15c4.418 0 8-3.134 8-7s-3.582-7-8-7-8 3.134-8 7c0 1.76.743 3.37 1.97 4.6a10.437 10.437 0 0 1-.524 2.318l-.003.011a10.722 10.722 0 0 1-.244.637c-.079.186.074.394.273.362a21.673 21.673 0 0 0 .693-.125zm.8-3.108a1 1 0 0 0-.287-.801C1.618 10.83 1 9.468 1 8c0-3.192 3.004-6 7-6s7 2.808 7 6c0 3.193-3.004 6-7 6a8.06 8.06 0 0 1-2.088-.272 1 1 0 0 0-.711.074c-.387.196-1.24.57-2.634.893a10.97 10.97 0 0 0 .398-2z"/>
@@ -106,22 +106,22 @@
                         </div>
 
                         <div class="col">
-                            <ul class="list-group list-group-horizontal justify-content-end">
+                            <ul class="list-group list-group-horizontal justify-content-end post-actions">
                                 <li class="list-group-item"><button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal" @click="editPost(post)">Editar</button></li>
                                 <li class="list-group-item"><button type="button" class="btn btn-danger btn-sm" @click="deletePost(post.id)">Deletar</button></li>
                             </ul>
                         </div>
                     </div>
 
-                    <div class="collapse" id="collapseComments">
+                    <div class="comments-box">
                         <ul class="list-group" v-for="comments in post.comments" :key="comments.id">
                             <li class="list-group-item">{{comments.comment}}</li>
                         </ul>
                     </div>
 
                     <div class="comment-form my-3">
-                        <textarea class="form-control" placeholder="Escreva um comentário..."></textarea>
-                        <button type="button" class="btn btn-success float-end" @click="postComment">Enviar</button>
+                        <textarea v-model="comment[key]" class="form-control" placeholder="Escreva um comentário..."></textarea>
+                        <button type="button" class="btn btn-success float-end" @click="postComment(post,key)">Enviar</button>
                     </div>
                 </div>
 
@@ -149,11 +149,22 @@ export default {
             },
             posts:{},
             edit:false,
-            errors:[]
+            errors:[],
+            comment:{}
         }
     },
     methods:{
-        postComment(){
+        postComment(post, key){
+            let token=localStorage.getItem('token')
+            axios.post('api/addcomment?token='+token+'&id='+post.id+'&author='+post.author+'&comment='+this.comment[key]).then(response=>{
+                if(response.data.status == 'error'){
+                    this.errors = response.data.errors
+                } else if(response.data.status == 'success'){
+                    this.getPosts()
+                    this.errors=[]
+                    this.comment={}
+                }
+            })
         },
         createPost(){
             let token=localStorage.getItem('token')
@@ -170,7 +181,8 @@ export default {
                     this.post={
                         id:'',
                         title:'',
-                        body:''
+                        body:'',
+                        author:'1'
                     }
                 }
             })
@@ -189,7 +201,8 @@ export default {
                     this.post={
                         id:'',
                         title:'',
-                        body:''
+                        body:'',
+                        author:'1'
                     }
                 }
             })

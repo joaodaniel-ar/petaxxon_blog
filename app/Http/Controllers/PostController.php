@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
+use App\Models\Comments;
 use Validator;
 
 class PostController extends Controller
@@ -25,6 +26,25 @@ class PostController extends Controller
         $post->body=$request->body;
         $post->save();
         return response()->json(['status'=>'success','data'=>$post]);
+    }
+
+    public function addcomment(Request $request){
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|min:1',
+            'author' => 'required|min:1',
+            'comment' => 'required|min:3'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['status'=>'error','errors'=>$validator->errors()]);
+        }
+        
+        $comment=new Comments;
+        $comment->comment=$request->comment;
+        $comment->user_id=$request->author;
+        $comment->post_id=$request->id;
+        $comment->save();
+        return response()->json(['status'=>'success','data'=>$comment]);
     }
 
     public function getposts(){

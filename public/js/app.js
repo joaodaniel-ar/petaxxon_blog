@@ -5465,51 +5465,68 @@ __webpack_require__.r(__webpack_exports__);
       },
       posts: {},
       edit: false,
-      errors: []
+      errors: [],
+      comment: {}
     };
   },
   methods: {
-    postComment: function postComment() {},
-    createPost: function createPost() {
+    postComment: function postComment(post, key) {
       var _this = this;
 
       var token = localStorage.getItem('token');
-      axios.post('api/createpost?token=' + token, this.post).then(function (response) {
+      axios.post('api/addcomment?token=' + token + '&id=' + post.id + '&author=' + post.author + '&comment=' + this.comment[key]).then(function (response) {
         if (response.data.status == 'error') {
           _this.errors = response.data.errors;
         } else if (response.data.status == 'success') {
           _this.getPosts();
 
-          Toast.fire({
-            icon: 'success',
-            title: 'Post inserido com sucesso!'
-          });
           _this.errors = [];
-          _this.post = {
-            id: '',
-            title: '',
-            body: ''
-          };
+          _this.comment = {};
         }
       });
     },
-    updatePost: function updatePost() {
+    createPost: function createPost() {
       var _this2 = this;
 
       var token = localStorage.getItem('token');
-      axios.put('api/updatepost/' + this.post.id + '?token=' + token, this.post).then(function (response) {
+      axios.post('api/createpost?token=' + token, this.post).then(function (response) {
         if (response.data.status == 'error') {
           _this2.errors = response.data.errors;
         } else if (response.data.status == 'success') {
+          _this2.getPosts();
+
           Toast.fire({
             icon: 'success',
-            title: 'Post atualizado!'
+            title: 'Post inserido com sucesso!'
           });
           _this2.errors = [];
           _this2.post = {
             id: '',
             title: '',
-            body: ''
+            body: '',
+            author: '1'
+          };
+        }
+      });
+    },
+    updatePost: function updatePost() {
+      var _this3 = this;
+
+      var token = localStorage.getItem('token');
+      axios.put('api/updatepost/' + this.post.id + '?token=' + token, this.post).then(function (response) {
+        if (response.data.status == 'error') {
+          _this3.errors = response.data.errors;
+        } else if (response.data.status == 'success') {
+          Toast.fire({
+            icon: 'success',
+            title: 'Post atualizado!'
+          });
+          _this3.errors = [];
+          _this3.post = {
+            id: '',
+            title: '',
+            body: '',
+            author: '1'
           };
         }
       });
@@ -5519,15 +5536,15 @@ __webpack_require__.r(__webpack_exports__);
       this.edit = true;
     },
     getPosts: function getPosts() {
-      var _this3 = this;
+      var _this4 = this;
 
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
       axios.get('api/getposts?page=' + page).then(function (response) {
-        _this3.posts = response.data.data;
+        _this4.posts = response.data.data;
       });
     },
     deletePost: function deletePost(postid) {
-      var _this4 = this;
+      var _this5 = this;
 
       var token = localStorage.getItem('token');
       Swal.fire({
@@ -5544,7 +5561,7 @@ __webpack_require__.r(__webpack_exports__);
             if (response.data.status == 'success') {
               Swal.fire('Deletado!', 'O post foi deletado.', 'success');
 
-              _this4.getPosts();
+              _this5.getPosts();
             }
           });
         }
@@ -10816,7 +10833,7 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 var ___CSS_LOADER_URL_REPLACEMENT_0___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_1___default()(_assets_login_background_png__WEBPACK_IMPORTED_MODULE_2__["default"]);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "@media screen and (max-width: 991px) {\nheader .header-main-box {\n    justify-content: center;\n}\n}\n@media screen and (min-width: 992px) {\nheader .header-main-box {\n    justify-content: space-between;\n}\n}\n@media screen and (max-width: 767px) {\n.main-content .left-sidebar, .main-content .right-sidebar {\n    display: none;\n}\n}\n.login {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  height: 100vh;\n  width: 100%;\n  background-color: dimgrey;\n  color: #000000;\n}\n.login .login-left {\n  background: url(" + ___CSS_LOADER_URL_REPLACEMENT_0___ + ");\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  padding: 0 20px;\n  height: 100vh;\n}\n.login .login-left img {\n  width: 400px;\n}\n@media screen and (max-width: 900px) {\n.login .login-left {\n    display: none;\n}\n}\n@media screen and (min-width: 901px) {\n.login .login-left {\n    width: 55%;\n    justify-content: center;\n}\n}\n.login .login-right {\n  background-color: #fff;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  padding: 0 20px;\n  height: 100vh;\n}\n.login .login-right .login-form {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n  padding: 20px;\n  height: 400px;\n  width: 70%;\n}\n@media screen and (max-width: 900px) {\n.login .login-right .login-form img {\n    width: 180px;\n    margin-bottom: 40px;\n}\n}\n@media screen and (min-width: 901px) {\n.login .login-right .login-form img {\n    display: none;\n}\n}\n.login .login-right .login-form h1 {\n  font-family: \"Nunito\";\n  font-size: 2em;\n  margin-bottom: 20px;\n  font-weight: bold;\n}\n.login .login-right .login-form .loginInputEmail, .login .login-right .login-form .loginInputPassword, .login .login-right .login-form .loginInputUser {\n  display: flex;\n  align-items: center;\n  color: #1a1a1d;\n  background-color: #d8d8d8;\n  border-radius: 5px;\n  padding: 3px 0;\n  margin: 5px 0;\n  width: 100%;\n  height: 50px;\n  border-radius: 5px;\n}\n.login .login-right .login-form .loginInputEmail input, .login .login-right .login-form .loginInputPassword input, .login .login-right .login-form .loginInputUser input {\n  background: transparent;\n  width: 100%;\n  outline-width: 0;\n  color: #535353;\n  border: none;\n  font-size: 17px;\n  margin-left: 10px;\n  margin-right: 10px;\n}\n.login .login-right .login-form .forgot-pass {\n  font-family: \"Nunito\";\n  margin: 5px 0 20px;\n  font-size: 1em;\n  font-weight: 500;\n  color: #000000;\n  align-self: flex-end;\n  cursor: pointer;\n  text-align: right;\n}\n.login .login-right .login-form .forgot-pass:hover {\n  color: #000000;\n}\n.login .login-right .login-form button {\n  background-color: #f58735;\n  width: 100%;\n  color: #eff2f5;\n  font-weight: 800;\n  height: 50px;\n  border-radius: 5px;\n  font-size: 1em;\n  margin-top: 5px;\n  border: none;\n  outline-width: 0;\n}\n.login .login-right .login-form button:hover {\n  background-color: #ff6d00;\n  cursor: pointer;\n}\n@media screen and (max-width: 900px) {\n.login .login-right {\n    width: 100%;\n    justify-content: center;\n}\n}\n@media screen and (min-width: 901px) {\n.login .login-right {\n    width: 45%;\n    justify-content: center;\n}\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "@media screen and (max-width: 991px) {\nheader .header-main-box {\n    justify-content: center;\n}\n}\n@media screen and (min-width: 992px) {\nheader .header-main-box {\n    justify-content: space-between;\n}\n}\n@media screen and (max-width: 767px) {\n.main-content .left-sidebar, .main-content .right-sidebar {\n    display: none;\n}\n}\n.main-content .post-actions li {\n  border: none;\n  padding: 0 0 10px;\n}\n.main-content .comments-box {\n  border-top: 1px solid #81818154;\n}\n.main-content .comments-box ul li {\n  border: none;\n}\n.login {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  height: 100vh;\n  width: 100%;\n  background-color: dimgrey;\n  color: #000000;\n}\n.login .login-left {\n  background: url(" + ___CSS_LOADER_URL_REPLACEMENT_0___ + ");\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  padding: 0 20px;\n  height: 100vh;\n}\n.login .login-left img {\n  width: 400px;\n}\n@media screen and (max-width: 900px) {\n.login .login-left {\n    display: none;\n}\n}\n@media screen and (min-width: 901px) {\n.login .login-left {\n    width: 55%;\n    justify-content: center;\n}\n}\n.login .login-right {\n  background-color: #fff;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  padding: 0 20px;\n  height: 100vh;\n}\n.login .login-right .login-form {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n  padding: 20px;\n  height: 400px;\n  width: 70%;\n}\n@media screen and (max-width: 900px) {\n.login .login-right .login-form img {\n    width: 180px;\n    margin-bottom: 40px;\n}\n}\n@media screen and (min-width: 901px) {\n.login .login-right .login-form img {\n    display: none;\n}\n}\n.login .login-right .login-form h1 {\n  font-family: \"Nunito\";\n  font-size: 2em;\n  margin-bottom: 20px;\n  font-weight: bold;\n}\n.login .login-right .login-form .loginInputEmail, .login .login-right .login-form .loginInputPassword, .login .login-right .login-form .loginInputUser {\n  display: flex;\n  align-items: center;\n  color: #1a1a1d;\n  background-color: #d8d8d8;\n  border-radius: 5px;\n  padding: 3px 0;\n  margin: 5px 0;\n  width: 100%;\n  height: 50px;\n  border-radius: 5px;\n}\n.login .login-right .login-form .loginInputEmail input, .login .login-right .login-form .loginInputPassword input, .login .login-right .login-form .loginInputUser input {\n  background: transparent;\n  width: 100%;\n  outline-width: 0;\n  color: #535353;\n  border: none;\n  font-size: 17px;\n  margin-left: 10px;\n  margin-right: 10px;\n}\n.login .login-right .login-form .forgot-pass {\n  font-family: \"Nunito\";\n  margin: 5px 0 20px;\n  font-size: 1em;\n  font-weight: 500;\n  color: #000000;\n  align-self: flex-end;\n  cursor: pointer;\n  text-align: right;\n}\n.login .login-right .login-form .forgot-pass:hover {\n  color: #000000;\n}\n.login .login-right .login-form button {\n  background-color: #f58735;\n  width: 100%;\n  color: #eff2f5;\n  font-weight: 800;\n  height: 50px;\n  border-radius: 5px;\n  font-size: 1em;\n  margin-top: 5px;\n  border: none;\n  outline-width: 0;\n}\n.login .login-right .login-form button:hover {\n  background-color: #ff6d00;\n  cursor: pointer;\n}\n@media screen and (max-width: 900px) {\n.login .login-right {\n    width: 100%;\n    justify-content: center;\n}\n}\n@media screen and (min-width: 901px) {\n.login .login-right {\n    width: 45%;\n    justify-content: center;\n}\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -33096,7 +33113,7 @@ var render = function () {
             [_vm._v("\n                Novo Post\n            ")]
           ),
           _vm._v(" "),
-          _vm._l(_vm.posts.data, function (post) {
+          _vm._l(_vm.posts.data, function (post, key) {
             return _c("div", { key: post.id, staticClass: "my-3" }, [
               _c("h4", [_vm._v(_vm._s(post.title))]),
               _vm._v(" "),
@@ -33106,7 +33123,10 @@ var render = function () {
                 _c("div", { staticClass: "col" }, [
                   _c(
                     "ul",
-                    { staticClass: "list-group list-group-horizontal" },
+                    {
+                      staticClass:
+                        "list-group list-group-horizontal post-actions",
+                    },
                     [
                       _c("li", { staticClass: "list-group-item" }, [
                         _c("a", { staticClass: "btn" }, [
@@ -33134,47 +33154,34 @@ var render = function () {
                       ]),
                       _vm._v(" "),
                       _c("li", { staticClass: "list-group-item" }, [
-                        _c(
-                          "a",
-                          {
-                            staticClass: "btn",
-                            attrs: {
-                              "data-bs-toggle": "collapse",
-                              href: "#collapseComments",
-                              role: "button",
-                              "aria-expanded": "false",
-                              "aria-controls": "collapseComments",
-                            },
-                          },
-                          [
-                            _c(
-                              "svg",
-                              {
-                                staticClass: "bi bi-chat-dots",
-                                attrs: {
-                                  xmlns: "http://www.w3.org/2000/svg",
-                                  width: "20",
-                                  height: "20",
-                                  fill: "currentColor",
-                                  viewBox: "0 0 16 16",
-                                },
+                        _c("a", { staticClass: "btn" }, [
+                          _c(
+                            "svg",
+                            {
+                              staticClass: "bi bi-chat-dots",
+                              attrs: {
+                                xmlns: "http://www.w3.org/2000/svg",
+                                width: "20",
+                                height: "20",
+                                fill: "currentColor",
+                                viewBox: "0 0 16 16",
                               },
-                              [
-                                _c("path", {
-                                  attrs: {
-                                    d: "M5 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2z",
-                                  },
-                                }),
-                                _vm._v(" "),
-                                _c("path", {
-                                  attrs: {
-                                    d: "m2.165 15.803.02-.004c1.83-.363 2.948-.842 3.468-1.105A9.06 9.06 0 0 0 8 15c4.418 0 8-3.134 8-7s-3.582-7-8-7-8 3.134-8 7c0 1.76.743 3.37 1.97 4.6a10.437 10.437 0 0 1-.524 2.318l-.003.011a10.722 10.722 0 0 1-.244.637c-.079.186.074.394.273.362a21.673 21.673 0 0 0 .693-.125zm.8-3.108a1 1 0 0 0-.287-.801C1.618 10.83 1 9.468 1 8c0-3.192 3.004-6 7-6s7 2.808 7 6c0 3.193-3.004 6-7 6a8.06 8.06 0 0 1-2.088-.272 1 1 0 0 0-.711.074c-.387.196-1.24.57-2.634.893a10.97 10.97 0 0 0 .398-2z",
-                                  },
-                                }),
-                              ]
-                            ),
-                          ]
-                        ),
+                            },
+                            [
+                              _c("path", {
+                                attrs: {
+                                  d: "M5 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2z",
+                                },
+                              }),
+                              _vm._v(" "),
+                              _c("path", {
+                                attrs: {
+                                  d: "m2.165 15.803.02-.004c1.83-.363 2.948-.842 3.468-1.105A9.06 9.06 0 0 0 8 15c4.418 0 8-3.134 8-7s-3.582-7-8-7-8 3.134-8 7c0 1.76.743 3.37 1.97 4.6a10.437 10.437 0 0 1-.524 2.318l-.003.011a10.722 10.722 0 0 1-.244.637c-.079.186.074.394.273.362a21.673 21.673 0 0 0 .693-.125zm.8-3.108a1 1 0 0 0-.287-.801C1.618 10.83 1 9.468 1 8c0-3.192 3.004-6 7-6s7 2.808 7 6c0 3.193-3.004 6-7 6a8.06 8.06 0 0 1-2.088-.272 1 1 0 0 0-.711.074c-.387.196-1.24.57-2.634.893a10.97 10.97 0 0 0 .398-2z",
+                                },
+                              }),
+                            ]
+                          ),
+                        ]),
                       ]),
                       _vm._v(" "),
                       _c("li", { staticClass: "list-group-item" }, [
@@ -33210,7 +33217,7 @@ var render = function () {
                     "ul",
                     {
                       staticClass:
-                        "list-group list-group-horizontal justify-content-end",
+                        "list-group list-group-horizontal justify-content-end post-actions",
                     },
                     [
                       _c("li", { staticClass: "list-group-item" }, [
@@ -33255,7 +33262,7 @@ var render = function () {
               _vm._v(" "),
               _c(
                 "div",
-                { staticClass: "collapse", attrs: { id: "collapseComments" } },
+                { staticClass: "comments-box" },
                 _vm._l(post.comments, function (comments) {
                   return _c(
                     "ul",
@@ -33272,8 +33279,25 @@ var render = function () {
               _vm._v(" "),
               _c("div", { staticClass: "comment-form my-3" }, [
                 _c("textarea", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.comment[key],
+                      expression: "comment[key]",
+                    },
+                  ],
                   staticClass: "form-control",
                   attrs: { placeholder: "Escreva um comentário..." },
+                  domProps: { value: _vm.comment[key] },
+                  on: {
+                    input: function ($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.comment, key, $event.target.value)
+                    },
+                  },
                 }),
                 _vm._v(" "),
                 _c(
@@ -33281,7 +33305,11 @@ var render = function () {
                   {
                     staticClass: "btn btn-success float-end",
                     attrs: { type: "button" },
-                    on: { click: _vm.postComment },
+                    on: {
+                      click: function ($event) {
+                        return _vm.postComment(post, key)
+                      },
+                    },
                   },
                   [_vm._v("Enviar")]
                 ),
