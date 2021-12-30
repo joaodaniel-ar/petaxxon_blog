@@ -4,7 +4,6 @@ window.Vue = require('vue');
 Vue.use(VueRouter)
 import VueRouter from 'vue-router'
 import Vue from 'vue'
-import Blogheader from './components/Blogheader'
 import routes from './routes'
 import Swal from 'sweetalert2'
 
@@ -27,7 +26,7 @@ const Toast = Swal.mixin({
 window.Toast=Toast
 
 const router = new VueRouter({
-    mode:'history',
+    //mode:'history',
     routes
 })
 
@@ -35,6 +34,5 @@ const app = new Vue({
     el: '#app',
     router,
     components:{
-        Blogheader
     }
 });

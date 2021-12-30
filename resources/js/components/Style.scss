@@ -1,0 +1,155 @@
+header{
+    .header-main-box{
+        @media screen and (max-width: 991px){
+            justify-content: center;
+        }
+
+        @media screen and (min-width: 992px){
+            justify-content: space-between;
+        }
+    }
+}
+
+.main-content{
+    .left-sidebar, .right-sidebar{
+        @media screen and (max-width: 767px){
+            display: none;
+        }
+    }
+}
+
+.login{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100vh;
+    width: 100%;
+    background-color: dimgrey;
+    color: #000000;
+
+    .login-left{
+        background: url(../../assets/login-background.png);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 0 20px;
+        height: 100vh;
+
+        img{
+            width: 400px;
+        }
+
+        @media screen and (max-width: 900px){
+            display: none;
+        }
+
+        @media screen and (min-width: 901px){
+            width: 55%;
+            justify-content: center;
+        }
+    }
+
+    .login-right{
+        background-color: #fff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 0 20px;
+        height: 100vh;
+
+        .login-form{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            height: 400px;
+            width: 70%;
+
+            img{
+                @media screen and (max-width: 900px){
+                    width: 180px;
+                    margin-bottom: 40px;
+                }
+
+                @media screen and (min-width: 901px){
+                    display: none;
+                }
+            }
+
+            h1{
+                font-family: 'Nunito';
+                font-size: 2em;
+                margin-bottom: 20px;
+                font-weight: bold;
+            }
+
+            .loginInputEmail, .loginInputPassword, .loginInputUser{
+                display: flex;
+                align-items: center;
+                color: #1a1a1d;
+                background-color: rgb(216, 216, 216);
+                border-radius: 5px;
+                padding: 3px 0;
+                margin: 5px 0;
+                width: 100%;
+                height: 50px;
+                border-radius: 5px;
+
+                input{
+                    background: transparent;
+                    width: 100%;
+                    outline-width: 0;
+                    color: #535353;
+                    border: none;
+                    font-size: 17px;
+                    margin-left: 10px;
+                    margin-right: 10px;
+                }
+            }
+            
+            .forgot-pass{
+                font-family: 'Nunito';
+                margin: 5px 0 20px;
+                font-size: 1em;
+                font-weight: 500;
+                color: #000000;
+                align-self: flex-end;
+                cursor: pointer;
+                text-align: right;
+
+                &:hover{
+                    color: #000000;
+                }
+            }
+
+            button{
+                background-color: #f58735;
+                width: 100%;
+                color: #eff2f5;
+                font-weight: 800;
+                height: 50px;
+                border-radius: 5px;
+                font-size: 1em;
+                margin-top: 5px;
+                border: none;
+                outline-width: 0;
+
+                &:hover{
+                    background-color: #ff6d00;
+                    cursor: pointer;
+                }
+            }
+        }
+
+        @media screen and (max-width: 900px){
+            width: 100%;
+            justify-content: center;
+        }
+
+        @media screen and (min-width: 901px){
+            width: 45%;
+            justify-content: center;
+        }
+    }
+}

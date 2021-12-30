@@ -10,4 +10,8 @@ class Post extends Model
 {
     use HasFactory;
     use SoftDeletes;
+
+    public function comments(){
+        return $this->hasMany(comments::class,'post_id');
+    }
 }

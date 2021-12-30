@@ -14,10 +14,7 @@
     </head>
     <body>
         <div id="app">
-            <div class="container">
-                <Blogheader></Blogheader>
-                <router-view></router-view>
-            </div>
+            <router-view></router-view>
         </div>
 
         <script src="{{asset('js/app.js')}}">

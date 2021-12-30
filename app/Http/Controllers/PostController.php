@@ -10,6 +10,7 @@ class PostController extends Controller
 {
     public function createpost(Request $request){
         $validator = Validator::make($request->all(), [
+            'author' => 'required|min:1',
             'title' => 'required|min:3',
             'body' => 'required|min:3',
         ]);
@@ -19,6 +20,7 @@ class PostController extends Controller
         }
         
         $post=new Post;
+        $post->author=$request->author;
         $post->title=$request->title;
         $post->body=$request->body;
         $post->save();
@@ -26,8 +28,8 @@ class PostController extends Controller
     }
 
     public function getposts(){
-        $posts=Post::paginate(3);
-        return response()->json(['status'=>'success','data'=>$posts]);
+        $comments=Post::with('comments')->paginate(3);
+        return response()->json(['status'=>'success','data'=>$comments]);
     }
 
     public function updatepost(Request $request, $postid){

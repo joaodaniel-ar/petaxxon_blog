@@ -14,14 +14,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('createpost','PostController@createpost');
+Route::group(['middleware'=>'auth'],function(){
+    Route::post('createpost','PostController@createpost');
+    Route::put('updatepost/{postid}','PostController@updatepost');
+    Route::delete('deletepost/{postid}','PostController@deletepost');
+});
+
 Route::get('getposts','PostController@getposts');
-Route::put('updatepost/{postid}','PostController@updatepost');
-Route::delete('deletepost/{postid}','PostController@deletepost');
 
 Route::post('register','UserController@register');
 Route::post('login','UserController@login');

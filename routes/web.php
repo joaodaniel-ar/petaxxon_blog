@@ -18,5 +18,9 @@ use App\Http\Controllers\PostController;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('try', function(){
+    return App\Models\Post::with('comments')->get();
+});
    
 Route::get('post', 'PostController@index');
