@@ -19,8 +19,9 @@
                 </div>
 
                 <h4 class="forgot-pass">Esqueceu sua senha?</h4>
-                <button class="btn btn-primary m-1 btn-block" @click="login">Login</button>
-                <router-link to="register" class="btn btn-primary m-1 btn-block">Registrar</router-link>
+                <button class="btn btn-primary m-3 btn-block" @click="login">Entrar</button>
+                <h6 class="m-0">Não possui uma conta?</h6>
+                <router-link to="register" class="btn btn-primary m-3 btn-block">Criar nova conta</router-link>
             </div>
         </div>
     </div>
@@ -47,6 +48,7 @@ export default {
                         icon: 'success',
                         title: 'Login efetuado com sucesso!'
                     })
+                    this.$router.push('/posts')
                 }else{
                     Toast.fire({
                         icon: 'error',

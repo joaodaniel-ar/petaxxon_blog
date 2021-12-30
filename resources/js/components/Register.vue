@@ -23,8 +23,9 @@
                 </div>
 
                 <h4 class="forgot-pass">Esqueceu sua senha?</h4>
-                <button class="btn btn-primary m-1 btn-block" @click="register">Registrar</button>
-                <router-link to="login" class="btn btn-primary m-1 btn-block">Login</router-link>
+                <button class="btn btn-primary m-3 btn-block" @click="register">Cadastrar-se</button>
+                <h6 class="m-0">Já tem uma conta?</h6>
+                <router-link to="login" class="btn btn-primary m-3 btn-block">Entrar</router-link>
             </div>
         </div>
     </div>
@@ -49,6 +50,7 @@ export default {
                         icon: 'success',
                         title: 'Cadastro efetuado com sucesso!'
                     })
+                    this.$router.push('/login')
                     this.user={
                         id:'',
                         title:'',

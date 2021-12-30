@@ -3,7 +3,7 @@ import Post from './components/Post'
 import Register from './components/Register'
 
 const routes = [
-    {path:'/', component: Post},
+    {path:'/', component: Login},
     {path:'/login', component: Login},
     {path:'/posts', component: Post},
     {path:'/register', component: Register}

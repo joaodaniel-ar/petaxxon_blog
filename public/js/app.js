@@ -5271,6 +5271,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -5283,6 +5284,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     login: function login() {
+      var _this = this;
+
       axios.post('api/login', this.user).then(function (response) {
         if (response.data.status == 'success') {
           var token = response.data.token;
@@ -5291,6 +5294,8 @@ __webpack_require__.r(__webpack_exports__);
             icon: 'success',
             title: 'Login efetuado com sucesso!'
           });
+
+          _this.$router.push('/posts');
         } else {
           Toast.fire({
             icon: 'error',
@@ -5618,6 +5623,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -5638,6 +5644,9 @@ __webpack_require__.r(__webpack_exports__);
             icon: 'success',
             title: 'Cadastro efetuado com sucesso!'
           });
+
+          _this.$router.push('/login');
+
           _this.user = {
             id: '',
             title: '',
@@ -5753,7 +5762,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var routes = [{
   path: '/',
-  component: _components_Post__WEBPACK_IMPORTED_MODULE_1__["default"]
+  component: _components_Login__WEBPACK_IMPORTED_MODULE_0__["default"]
 }, {
   path: '/login',
   component: _components_Login__WEBPACK_IMPORTED_MODULE_0__["default"]
@@ -10833,7 +10842,7 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 var ___CSS_LOADER_URL_REPLACEMENT_0___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_1___default()(_assets_login_background_png__WEBPACK_IMPORTED_MODULE_2__["default"]);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "@media screen and (max-width: 991px) {\nheader .header-main-box {\n    justify-content: center;\n}\n}\n@media screen and (min-width: 992px) {\nheader .header-main-box {\n    justify-content: space-between;\n}\n}\n@media screen and (max-width: 767px) {\n.main-content .left-sidebar, .main-content .right-sidebar {\n    display: none;\n}\n}\n.main-content .post-actions li {\n  border: none;\n  padding: 0 0 10px;\n}\n.main-content .comments-box {\n  border-top: 1px solid #81818154;\n}\n.main-content .comments-box ul li {\n  border: none;\n}\n.login {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  height: 100vh;\n  width: 100%;\n  background-color: dimgrey;\n  color: #000000;\n}\n.login .login-left {\n  background: url(" + ___CSS_LOADER_URL_REPLACEMENT_0___ + ");\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  padding: 0 20px;\n  height: 100vh;\n}\n.login .login-left img {\n  width: 400px;\n}\n@media screen and (max-width: 900px) {\n.login .login-left {\n    display: none;\n}\n}\n@media screen and (min-width: 901px) {\n.login .login-left {\n    width: 55%;\n    justify-content: center;\n}\n}\n.login .login-right {\n  background-color: #fff;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  padding: 0 20px;\n  height: 100vh;\n}\n.login .login-right .login-form {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n  padding: 20px;\n  height: 400px;\n  width: 70%;\n}\n@media screen and (max-width: 900px) {\n.login .login-right .login-form img {\n    width: 180px;\n    margin-bottom: 40px;\n}\n}\n@media screen and (min-width: 901px) {\n.login .login-right .login-form img {\n    display: none;\n}\n}\n.login .login-right .login-form h1 {\n  font-family: \"Nunito\";\n  font-size: 2em;\n  margin-bottom: 20px;\n  font-weight: bold;\n}\n.login .login-right .login-form .loginInputEmail, .login .login-right .login-form .loginInputPassword, .login .login-right .login-form .loginInputUser {\n  display: flex;\n  align-items: center;\n  color: #1a1a1d;\n  background-color: #d8d8d8;\n  border-radius: 5px;\n  padding: 3px 0;\n  margin: 5px 0;\n  width: 100%;\n  height: 50px;\n  border-radius: 5px;\n}\n.login .login-right .login-form .loginInputEmail input, .login .login-right .login-form .loginInputPassword input, .login .login-right .login-form .loginInputUser input {\n  background: transparent;\n  width: 100%;\n  outline-width: 0;\n  color: #535353;\n  border: none;\n  font-size: 17px;\n  margin-left: 10px;\n  margin-right: 10px;\n}\n.login .login-right .login-form .forgot-pass {\n  font-family: \"Nunito\";\n  margin: 5px 0 20px;\n  font-size: 1em;\n  font-weight: 500;\n  color: #000000;\n  align-self: flex-end;\n  cursor: pointer;\n  text-align: right;\n}\n.login .login-right .login-form .forgot-pass:hover {\n  color: #000000;\n}\n.login .login-right .login-form button {\n  background-color: #f58735;\n  width: 100%;\n  color: #eff2f5;\n  font-weight: 800;\n  height: 50px;\n  border-radius: 5px;\n  font-size: 1em;\n  margin-top: 5px;\n  border: none;\n  outline-width: 0;\n}\n.login .login-right .login-form button:hover {\n  background-color: #ff6d00;\n  cursor: pointer;\n}\n@media screen and (max-width: 900px) {\n.login .login-right {\n    width: 100%;\n    justify-content: center;\n}\n}\n@media screen and (min-width: 901px) {\n.login .login-right {\n    width: 45%;\n    justify-content: center;\n}\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "@media screen and (max-width: 991px) {\nheader .header-main-box {\n    justify-content: center;\n}\n}\n@media screen and (min-width: 992px) {\nheader .header-main-box {\n    justify-content: space-between;\n}\n}\n@media screen and (max-width: 767px) {\n.main-content .left-sidebar, .main-content .right-sidebar {\n    display: none;\n}\n}\n.main-content .post-actions li {\n  border: none;\n  padding: 0 0 10px;\n}\n.main-content .comments-box {\n  border-top: 1px solid #81818154;\n}\n.main-content .comments-box ul li {\n  border: none;\n}\n.login {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  height: 100vh;\n  width: 100%;\n  background-color: dimgrey;\n  color: #000000;\n}\n.login .login-left {\n  background: url(" + ___CSS_LOADER_URL_REPLACEMENT_0___ + ");\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  padding: 0 20px;\n  height: 100vh;\n}\n.login .login-left img {\n  width: 400px;\n}\n@media screen and (max-width: 900px) {\n.login .login-left {\n    display: none;\n}\n}\n@media screen and (min-width: 901px) {\n.login .login-left {\n    width: 55%;\n    justify-content: center;\n}\n}\n.login .login-right {\n  background-color: #fff;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  padding: 0 20px;\n  height: 100vh;\n}\n.login .login-right .login-form {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n  padding: 20px;\n  height: 400px;\n  width: 70%;\n}\n@media screen and (max-width: 900px) {\n.login .login-right .login-form img {\n    width: 180px;\n    margin-bottom: 40px;\n}\n}\n@media screen and (min-width: 901px) {\n.login .login-right .login-form img {\n    display: none;\n}\n}\n.login .login-right .login-form h1 {\n  font-family: \"Nunito\";\n  font-size: 2em;\n  margin-bottom: 20px;\n  font-weight: bold;\n}\n.login .login-right .login-form .loginInputEmail, .login .login-right .login-form .loginInputPassword, .login .login-right .login-form .loginInputUser {\n  display: flex;\n  align-items: center;\n  color: #1a1a1d;\n  background-color: #ececec;\n  margin: 5px 0;\n  width: 100%;\n}\n.login .login-right .login-form .loginInputEmail input, .login .login-right .login-form .loginInputPassword input, .login .login-right .login-form .loginInputUser input {\n  background: transparent;\n  width: 100%;\n  border-radius: 5px;\n  padding: 10px;\n  outline-width: 0;\n  color: #535353;\n  border: 1px solid #dddfe2;\n  font-size: 17px;\n  margin-left: 10px;\n  margin-right: 10px;\n}\n.login .login-right .login-form .loginInputEmail input:focus, .login .login-right .login-form .loginInputPassword input:focus, .login .login-right .login-form .loginInputUser input:focus {\n  border-color: #ff9113;\n  box-shadow: 0 0 0 2px #e7f3ff;\n  caret-color: #ff9113;\n}\n.login .login-right .login-form .forgot-pass {\n  font-family: \"Nunito\";\n  margin: 5px 0 20px;\n  font-size: 1em;\n  font-weight: 500;\n  color: #000000;\n  align-self: flex-end;\n  cursor: pointer;\n  text-align: right;\n}\n.login .login-right .login-form .forgot-pass:hover {\n  color: #000000;\n}\n.login .login-right .login-form .btn {\n  background: linear-gradient(90deg, #ff7819 0%, #ff9240 35%, #ff7819 100%);\n  width: 100%;\n  color: #eff2f5;\n  font-weight: 800;\n  padding: 10px 0;\n  border-radius: 5px;\n  font-size: 1.3em;\n  margin: 5px 0;\n  border: none;\n  outline-width: 0;\n}\n.login .login-right .login-form .btn:hover {\n  background: linear-gradient(90deg, #f56414 0%, #ff9240 35%, #f56414 100%);\n  cursor: pointer;\n}\n@media screen and (max-width: 900px) {\n.login .login-right {\n    width: 100%;\n    justify-content: center;\n}\n}\n@media screen and (min-width: 901px) {\n.login .login-right {\n    width: 45%;\n    justify-content: center;\n}\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -32818,19 +32827,21 @@ var render = function () {
           _c(
             "button",
             {
-              staticClass: "btn btn-primary m-1 btn-block",
+              staticClass: "btn btn-primary m-3 btn-block",
               on: { click: _vm.login },
             },
-            [_vm._v("Login")]
+            [_vm._v("Entrar")]
           ),
+          _vm._v(" "),
+          _c("h6", { staticClass: "m-0" }, [_vm._v("Não possui uma conta?")]),
           _vm._v(" "),
           _c(
             "router-link",
             {
-              staticClass: "btn btn-primary m-1 btn-block",
+              staticClass: "btn btn-primary m-3 btn-block",
               attrs: { to: "register" },
             },
-            [_vm._v("Registrar")]
+            [_vm._v("Criar nova conta")]
           ),
         ],
         1
@@ -33590,19 +33601,21 @@ var render = function () {
           _c(
             "button",
             {
-              staticClass: "btn btn-primary m-1 btn-block",
+              staticClass: "btn btn-primary m-3 btn-block",
               on: { click: _vm.register },
             },
-            [_vm._v("Registrar")]
+            [_vm._v("Cadastrar-se")]
           ),
+          _vm._v(" "),
+          _c("h6", { staticClass: "m-0" }, [_vm._v("Já tem uma conta?")]),
           _vm._v(" "),
           _c(
             "router-link",
             {
-              staticClass: "btn btn-primary m-1 btn-block",
+              staticClass: "btn btn-primary m-3 btn-block",
               attrs: { to: "login" },
             },
-            [_vm._v("Login")]
+            [_vm._v("Entrar")]
           ),
         ],
         1
