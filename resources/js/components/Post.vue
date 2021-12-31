@@ -68,7 +68,7 @@
                 </div>
 
                 <!-- Button trigger modal -->
-                <button type="button" class="btn btn-success btn-sm float-end" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <button type="button" @click="createPosts()" class="btn btn-success btn-sm float-end" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     Novo Post
                 </button>
 
@@ -105,11 +105,18 @@
                             </ul>
                         </div>
 
-                        <div class="col">
-                            <ul class="list-group list-group-horizontal justify-content-end post-actions">
-                                <li class="list-group-item"><button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal" @click="editPost(post)">Editar</button></li>
-                                <li class="list-group-item"><button type="button" class="btn btn-danger btn-sm" @click="deletePost(post.id)">Deletar</button></li>
-                            </ul>
+                        <div v-if="post.author==user.id" class="col">
+                            <div class="dropdown float-end">
+                                <a href="#" class="actions-btn" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                                        <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+                                    </svg>
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                    <li><a href="#" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exampleModal" @click="editPost(post)">Editar</a></li>
+                                    <li><a href="#" class="dropdown-item" @click="deletePost(post.id)">Excluir</a></li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
 
@@ -119,10 +126,9 @@
                         </ul>
                     </div>
 
-                    <div class="comment-form my-3">
-                        <textarea v-model="comment[key]" class="form-control" placeholder="Escreva um comentário..."></textarea>
-                        <button type="button" class="btn btn-success float-end" @click="postComment(post,key)">Enviar</button>
-                    </div>
+                    <form @submit.prevent="postComment(post,key)" class="comment-form mt-2 mb-4">
+                        <input type="text" v-model="comment[key]" class="form-control py-2" placeholder="Escreva um comentário...">
+                    </form>
                 </div>
 
                 <pagination align="center" :data="posts" @pagination-change-page="getPosts" >
@@ -144,14 +150,25 @@ export default {
             post:{
                 id:'',
                 title:'',
-                body:'',
-                author:'1'
+                body:''
             },
             posts:{},
             edit:false,
             errors:[],
-            comment:{}
+            comment:{},
+            user:[]
         }
+    },
+    mounted(){
+        let token=localStorage.getItem('token')
+        axios.get('api/user?token='+token).then((res)=>{
+            this.user = res.data
+        }).catch((error)=>{
+            this.error = error.response.data.message
+            if(this.error == 'Unauthenticated.'){
+                this.$router.push('/login')
+            }
+        })
     },
     methods:{
         postComment(post, key){
@@ -168,7 +185,7 @@ export default {
         },
         createPost(){
             let token=localStorage.getItem('token')
-            axios.post('api/createpost?token='+token,this.post).then(response=>{
+            axios.post('api/createpost?token='+token+'&author='+this.user.id,this.post).then(response=>{
                 if(response.data.status == 'error'){
                     this.errors = response.data.errors
                 } else if(response.data.status == 'success'){
@@ -181,8 +198,7 @@ export default {
                     this.post={
                         id:'',
                         title:'',
-                        body:'',
-                        author:'1'
+                        body:''
                     }
                 }
             })
@@ -201,15 +217,19 @@ export default {
                     this.post={
                         id:'',
                         title:'',
-                        body:'',
-                        author:'1'
+                        body:''
                     }
+                    this.edit=false
                 }
             })
         },
         editPost(post){
             this.post=post
             this.edit=true
+        },
+        createPosts(){
+            this.post={}
+            this.edit=false
         },
         getPosts(page = 1){
             axios.get('api/getposts?page='+ page).then(response=>{
@@ -225,7 +245,8 @@ export default {
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Sim, deletar!'
+            confirmButtonText: 'Sim',
+            cancelButtonText:  'Cancelar'
             }).then((result) => {
                 if (result.isConfirmed) {
                     axios.delete('api/deletepost/'+postid+'?token='+token).then(response=>{

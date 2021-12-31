@@ -5458,80 +5458,99 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       post: {
         id: '',
         title: '',
-        body: '',
-        author: '1'
+        body: ''
       },
       posts: {},
       edit: false,
       errors: [],
-      comment: {}
+      comment: {},
+      user: []
     };
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    var token = localStorage.getItem('token');
+    axios.get('api/user?token=' + token).then(function (res) {
+      _this.user = res.data;
+    })["catch"](function (error) {
+      _this.error = error.response.data.message;
+
+      if (_this.error == 'Unauthenticated.') {
+        _this.$router.push('/login');
+      }
+    });
   },
   methods: {
     postComment: function postComment(post, key) {
-      var _this = this;
-
-      var token = localStorage.getItem('token');
-      axios.post('api/addcomment?token=' + token + '&id=' + post.id + '&author=' + post.author + '&comment=' + this.comment[key]).then(function (response) {
-        if (response.data.status == 'error') {
-          _this.errors = response.data.errors;
-        } else if (response.data.status == 'success') {
-          _this.getPosts();
-
-          _this.errors = [];
-          _this.comment = {};
-        }
-      });
-    },
-    createPost: function createPost() {
       var _this2 = this;
 
       var token = localStorage.getItem('token');
-      axios.post('api/createpost?token=' + token, this.post).then(function (response) {
+      axios.post('api/addcomment?token=' + token + '&id=' + post.id + '&author=' + post.author + '&comment=' + this.comment[key]).then(function (response) {
         if (response.data.status == 'error') {
           _this2.errors = response.data.errors;
         } else if (response.data.status == 'success') {
           _this2.getPosts();
 
-          Toast.fire({
-            icon: 'success',
-            title: 'Post inserido com sucesso!'
-          });
           _this2.errors = [];
-          _this2.post = {
-            id: '',
-            title: '',
-            body: '',
-            author: '1'
-          };
+          _this2.comment = {};
         }
       });
     },
-    updatePost: function updatePost() {
+    createPost: function createPost() {
       var _this3 = this;
 
       var token = localStorage.getItem('token');
-      axios.put('api/updatepost/' + this.post.id + '?token=' + token, this.post).then(function (response) {
+      axios.post('api/createpost?token=' + token + '&author=' + this.user.id, this.post).then(function (response) {
         if (response.data.status == 'error') {
           _this3.errors = response.data.errors;
         } else if (response.data.status == 'success') {
+          _this3.getPosts();
+
           Toast.fire({
             icon: 'success',
-            title: 'Post atualizado!'
+            title: 'Post inserido com sucesso!'
           });
           _this3.errors = [];
           _this3.post = {
             id: '',
             title: '',
-            body: '',
-            author: '1'
+            body: ''
           };
+        }
+      });
+    },
+    updatePost: function updatePost() {
+      var _this4 = this;
+
+      var token = localStorage.getItem('token');
+      axios.put('api/updatepost/' + this.post.id + '?token=' + token, this.post).then(function (response) {
+        if (response.data.status == 'error') {
+          _this4.errors = response.data.errors;
+        } else if (response.data.status == 'success') {
+          Toast.fire({
+            icon: 'success',
+            title: 'Post atualizado!'
+          });
+          _this4.errors = [];
+          _this4.post = {
+            id: '',
+            title: '',
+            body: ''
+          };
+          _this4.edit = false;
         }
       });
     },
@@ -5539,16 +5558,20 @@ __webpack_require__.r(__webpack_exports__);
       this.post = post;
       this.edit = true;
     },
+    createPosts: function createPosts() {
+      this.post = {};
+      this.edit = false;
+    },
     getPosts: function getPosts() {
-      var _this4 = this;
+      var _this5 = this;
 
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
       axios.get('api/getposts?page=' + page).then(function (response) {
-        _this4.posts = response.data.data;
+        _this5.posts = response.data.data;
       });
     },
     deletePost: function deletePost(postid) {
-      var _this5 = this;
+      var _this6 = this;
 
       var token = localStorage.getItem('token');
       Swal.fire({
@@ -5558,14 +5581,15 @@ __webpack_require__.r(__webpack_exports__);
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Sim, deletar!'
+        confirmButtonText: 'Sim',
+        cancelButtonText: 'Cancelar'
       }).then(function (result) {
         if (result.isConfirmed) {
           axios["delete"]('api/deletepost/' + postid + '?token=' + token).then(function (response) {
             if (response.data.status == 'success') {
               Swal.fire('Deletado!', 'O post foi deletado.', 'success');
 
-              _this5.getPosts();
+              _this6.getPosts();
             }
           });
         }
@@ -5753,24 +5777,26 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _components_Login__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/Login */ "./resources/js/components/Login.vue");
-/* harmony import */ var _components_Post__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/Post */ "./resources/js/components/Post.vue");
-/* harmony import */ var _components_Register__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/Register */ "./resources/js/components/Register.vue");
+/* harmony import */ var _components_Home__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/Home */ "./resources/js/components/Home.vue");
+/* harmony import */ var _components_Login__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/Login */ "./resources/js/components/Login.vue");
+/* harmony import */ var _components_Post__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/Post */ "./resources/js/components/Post.vue");
+/* harmony import */ var _components_Register__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/Register */ "./resources/js/components/Register.vue");
+
 
 
 
 var routes = [{
   path: '/',
-  component: _components_Login__WEBPACK_IMPORTED_MODULE_0__["default"]
+  component: _components_Login__WEBPACK_IMPORTED_MODULE_1__["default"]
 }, {
   path: '/login',
-  component: _components_Login__WEBPACK_IMPORTED_MODULE_0__["default"]
+  component: _components_Login__WEBPACK_IMPORTED_MODULE_1__["default"]
 }, {
   path: '/posts',
-  component: _components_Post__WEBPACK_IMPORTED_MODULE_1__["default"]
+  component: _components_Post__WEBPACK_IMPORTED_MODULE_2__["default"]
 }, {
   path: '/register',
-  component: _components_Register__WEBPACK_IMPORTED_MODULE_2__["default"]
+  component: _components_Register__WEBPACK_IMPORTED_MODULE_3__["default"]
 }];
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (routes);
 
@@ -10841,7 +10867,7 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 var ___CSS_LOADER_URL_REPLACEMENT_0___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_1___default()(_assets_login_background_png__WEBPACK_IMPORTED_MODULE_2__["default"]);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "@media screen and (max-width: 991px) {\nheader .header-main-box {\n    justify-content: center;\n}\n}\n@media screen and (min-width: 992px) {\nheader .header-main-box {\n    justify-content: space-between;\n}\n}\n@media screen and (max-width: 767px) {\n.main-content .left-sidebar, .main-content .right-sidebar {\n    display: none;\n}\n}\n.main-content .post-actions li {\n  border: none;\n  padding: 0 0 10px;\n}\n.main-content .comments-box {\n  border-top: 1px solid #81818154;\n}\n.main-content .comments-box ul li {\n  border: none;\n}\n.login {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  height: 100vh;\n  width: 100%;\n  background-color: dimgrey;\n  color: #000000;\n}\n.login .login-left {\n  background: url(" + ___CSS_LOADER_URL_REPLACEMENT_0___ + ");\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  padding: 0 20px;\n  height: 100vh;\n}\n.login .login-left img {\n  width: 400px;\n}\n@media screen and (max-width: 900px) {\n.login .login-left {\n    display: none;\n}\n}\n@media screen and (min-width: 901px) {\n.login .login-left {\n    width: 55%;\n    justify-content: center;\n}\n}\n.login .login-right {\n  background-color: #fff;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  padding: 0 20px;\n  height: 100vh;\n}\n.login .login-right .login-form {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n  padding: 20px;\n  height: 400px;\n  width: 70%;\n}\n@media screen and (max-width: 900px) {\n.login .login-right .login-form img {\n    width: 180px;\n    margin-bottom: 40px;\n}\n}\n@media screen and (min-width: 901px) {\n.login .login-right .login-form img {\n    display: none;\n}\n}\n.login .login-right .login-form h1 {\n  font-family: \"Nunito\";\n  font-size: 2em;\n  margin-bottom: 20px;\n  font-weight: bold;\n}\n.login .login-right .login-form .loginInputEmail, .login .login-right .login-form .loginInputPassword, .login .login-right .login-form .loginInputUser {\n  display: flex;\n  align-items: center;\n  color: #1a1a1d;\n  background-color: #ececec;\n  margin: 5px 0;\n  width: 100%;\n}\n.login .login-right .login-form .loginInputEmail input, .login .login-right .login-form .loginInputPassword input, .login .login-right .login-form .loginInputUser input {\n  background: transparent;\n  width: 100%;\n  border-radius: 5px;\n  padding: 10px;\n  outline-width: 0;\n  color: #535353;\n  border: 1px solid #dddfe2;\n  font-size: 17px;\n  margin-left: 10px;\n  margin-right: 10px;\n}\n.login .login-right .login-form .loginInputEmail input:focus, .login .login-right .login-form .loginInputPassword input:focus, .login .login-right .login-form .loginInputUser input:focus {\n  border-color: #ff9113;\n  box-shadow: 0 0 0 2px #e7f3ff;\n  caret-color: #ff9113;\n}\n.login .login-right .login-form .forgot-pass {\n  font-family: \"Nunito\";\n  margin: 5px 0 20px;\n  font-size: 1em;\n  font-weight: 500;\n  color: #000000;\n  align-self: flex-end;\n  cursor: pointer;\n  text-align: right;\n}\n.login .login-right .login-form .forgot-pass:hover {\n  color: #000000;\n}\n.login .login-right .login-form .btn {\n  background: linear-gradient(90deg, #ff7819 0%, #ff9240 35%, #ff7819 100%);\n  width: 100%;\n  color: #eff2f5;\n  font-weight: 800;\n  padding: 10px 0;\n  border-radius: 5px;\n  font-size: 1.3em;\n  margin: 5px 0;\n  border: none;\n  outline-width: 0;\n}\n.login .login-right .login-form .btn:hover {\n  background: linear-gradient(90deg, #f56414 0%, #ff9240 35%, #f56414 100%);\n  cursor: pointer;\n}\n@media screen and (max-width: 900px) {\n.login .login-right {\n    width: 100%;\n    justify-content: center;\n}\n}\n@media screen and (min-width: 901px) {\n.login .login-right {\n    width: 45%;\n    justify-content: center;\n}\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "@media screen and (max-width: 991px) {\nheader .header-main-box {\n    justify-content: center;\n}\n}\n@media screen and (min-width: 992px) {\nheader .header-main-box {\n    justify-content: space-between;\n}\n}\n@media screen and (max-width: 767px) {\n.main-content .left-sidebar, .main-content .right-sidebar {\n    display: none;\n}\n}\n.main-content .post-actions li {\n  border: none;\n  padding: 0 0 10px;\n}\n.main-content .actions-btn {\n  color: #000000;\n  text-decoration: none;\n}\n.main-content .comments-box {\n  border-top: 1px solid #81818154;\n}\n.main-content .comments-box ul li {\n  border: none;\n}\n.login {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  height: 100vh;\n  width: 100%;\n  background-color: dimgrey;\n  color: #000000;\n}\n.login .login-left {\n  background: url(" + ___CSS_LOADER_URL_REPLACEMENT_0___ + ");\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  padding: 0 20px;\n  height: 100vh;\n}\n.login .login-left img {\n  width: 400px;\n}\n@media screen and (max-width: 900px) {\n.login .login-left {\n    display: none;\n}\n}\n@media screen and (min-width: 901px) {\n.login .login-left {\n    width: 55%;\n    justify-content: center;\n}\n}\n.login .login-right {\n  background-color: #fff;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  padding: 0 20px;\n  height: 100vh;\n}\n.login .login-right .login-form {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n  padding: 20px;\n  height: 400px;\n  width: 70%;\n}\n@media screen and (max-width: 900px) {\n.login .login-right .login-form img {\n    width: 180px;\n    margin-bottom: 40px;\n}\n}\n@media screen and (min-width: 901px) {\n.login .login-right .login-form img {\n    display: none;\n}\n}\n.login .login-right .login-form h1 {\n  font-family: \"Nunito\";\n  font-size: 2em;\n  margin-bottom: 20px;\n  font-weight: bold;\n}\n.login .login-right .login-form .loginInputEmail, .login .login-right .login-form .loginInputPassword, .login .login-right .login-form .loginInputUser {\n  display: flex;\n  align-items: center;\n  color: #1a1a1d;\n  background-color: #ececec;\n  margin: 5px 0;\n  width: 100%;\n}\n.login .login-right .login-form .loginInputEmail input, .login .login-right .login-form .loginInputPassword input, .login .login-right .login-form .loginInputUser input {\n  background: transparent;\n  width: 100%;\n  border-radius: 5px;\n  padding: 10px;\n  outline-width: 0;\n  color: #535353;\n  border: 1px solid #dddfe2;\n  font-size: 17px;\n  margin-left: 10px;\n  margin-right: 10px;\n}\n.login .login-right .login-form .loginInputEmail input:focus, .login .login-right .login-form .loginInputPassword input:focus, .login .login-right .login-form .loginInputUser input:focus {\n  border-color: #ff9113;\n  box-shadow: 0 0 0 2px #e7f3ff;\n  caret-color: #ff9113;\n}\n.login .login-right .login-form .forgot-pass {\n  font-family: \"Nunito\";\n  margin: 5px 0 20px;\n  font-size: 1em;\n  font-weight: 500;\n  color: #000000;\n  align-self: flex-end;\n  cursor: pointer;\n  text-align: right;\n}\n.login .login-right .login-form .forgot-pass:hover {\n  color: #000000;\n}\n.login .login-right .login-form .btn {\n  background: linear-gradient(90deg, #ff7819 0%, #ff9240 35%, #ff7819 100%);\n  width: 100%;\n  color: #eff2f5;\n  font-weight: 800;\n  padding: 10px 0;\n  border-radius: 5px;\n  font-size: 1.3em;\n  margin: 5px 0;\n  border: none;\n  outline-width: 0;\n}\n.login .login-right .login-form .btn:hover {\n  background: linear-gradient(90deg, #f56414 0%, #ff9240 35%, #f56414 100%);\n  cursor: pointer;\n}\n@media screen and (max-width: 900px) {\n.login .login-right {\n    width: 100%;\n    justify-content: center;\n}\n}\n@media screen and (min-width: 901px) {\n.login .login-right {\n    width: 45%;\n    justify-content: center;\n}\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -32508,6 +32534,40 @@ if (typeof this !== 'undefined' && this.Sweetalert2){  this.swal = this.sweetAle
 
 /***/ }),
 
+/***/ "./resources/js/components/Home.vue":
+/*!******************************************!*\
+  !*** ./resources/js/components/Home.vue ***!
+  \******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+var render, staticRenderFns
+var script = {}
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_0__["default"])(
+  script,
+  render,
+  staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+component.options.__file = "resources/js/components/Home.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/Login.vue":
 /*!*******************************************!*\
   !*** ./resources/js/components/Login.vue ***!
@@ -33127,6 +33187,11 @@ var render = function () {
                 "data-bs-toggle": "modal",
                 "data-bs-target": "#exampleModal",
               },
+              on: {
+                click: function ($event) {
+                  return _vm.createPosts()
+                },
+              },
             },
             [_vm._v("\n                Novo Post\n            ")]
           ),
@@ -33230,52 +33295,91 @@ var render = function () {
                   ),
                 ]),
                 _vm._v(" "),
-                _c("div", { staticClass: "col" }, [
-                  _c(
-                    "ul",
-                    {
-                      staticClass:
-                        "list-group list-group-horizontal justify-content-end post-actions",
-                    },
-                    [
-                      _c("li", { staticClass: "list-group-item" }, [
+                post.author == _vm.user.id
+                  ? _c("div", { staticClass: "col" }, [
+                      _c("div", { staticClass: "dropdown float-end" }, [
                         _c(
-                          "button",
+                          "a",
                           {
-                            staticClass: "btn btn-success btn-sm",
+                            staticClass: "actions-btn",
                             attrs: {
-                              type: "button",
-                              "data-bs-toggle": "modal",
-                              "data-bs-target": "#exampleModal",
-                            },
-                            on: {
-                              click: function ($event) {
-                                return _vm.editPost(post)
-                              },
+                              href: "#",
+                              id: "dropdownMenuButton1",
+                              "data-bs-toggle": "dropdown",
+                              "aria-expanded": "false",
                             },
                           },
-                          [_vm._v("Editar")]
+                          [
+                            _c(
+                              "svg",
+                              {
+                                staticClass: "bi bi-three-dots",
+                                attrs: {
+                                  xmlns: "http://www.w3.org/2000/svg",
+                                  width: "22",
+                                  height: "22",
+                                  fill: "currentColor",
+                                  viewBox: "0 0 16 16",
+                                },
+                              },
+                              [
+                                _c("path", {
+                                  attrs: {
+                                    d: "M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z",
+                                  },
+                                }),
+                              ]
+                            ),
+                          ]
                         ),
-                      ]),
-                      _vm._v(" "),
-                      _c("li", { staticClass: "list-group-item" }, [
+                        _vm._v(" "),
                         _c(
-                          "button",
+                          "ul",
                           {
-                            staticClass: "btn btn-danger btn-sm",
-                            attrs: { type: "button" },
-                            on: {
-                              click: function ($event) {
-                                return _vm.deletePost(post.id)
-                              },
-                            },
+                            staticClass: "dropdown-menu",
+                            attrs: { "aria-labelledby": "dropdownMenuButton1" },
                           },
-                          [_vm._v("Deletar")]
+                          [
+                            _c("li", [
+                              _c(
+                                "a",
+                                {
+                                  staticClass: "dropdown-item",
+                                  attrs: {
+                                    href: "#",
+                                    "data-bs-toggle": "modal",
+                                    "data-bs-target": "#exampleModal",
+                                  },
+                                  on: {
+                                    click: function ($event) {
+                                      return _vm.editPost(post)
+                                    },
+                                  },
+                                },
+                                [_vm._v("Editar")]
+                              ),
+                            ]),
+                            _vm._v(" "),
+                            _c("li", [
+                              _c(
+                                "a",
+                                {
+                                  staticClass: "dropdown-item",
+                                  attrs: { href: "#" },
+                                  on: {
+                                    click: function ($event) {
+                                      return _vm.deletePost(post.id)
+                                    },
+                                  },
+                                },
+                                [_vm._v("Excluir")]
+                              ),
+                            ]),
+                          ]
                         ),
                       ]),
-                    ]
-                  ),
-                ]),
+                    ])
+                  : _vm._e(),
               ]),
               _vm._v(" "),
               _c(
@@ -33295,43 +33399,44 @@ var render = function () {
                 0
               ),
               _vm._v(" "),
-              _c("div", { staticClass: "comment-form my-3" }, [
-                _c("textarea", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.comment[key],
-                      expression: "comment[key]",
-                    },
-                  ],
-                  staticClass: "form-control",
-                  attrs: { placeholder: "Escreva um comentário..." },
-                  domProps: { value: _vm.comment[key] },
+              _c(
+                "form",
+                {
+                  staticClass: "comment-form mt-2 mb-4",
                   on: {
-                    input: function ($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(_vm.comment, key, $event.target.value)
+                    submit: function ($event) {
+                      $event.preventDefault()
+                      return _vm.postComment(post, key)
                     },
                   },
-                }),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-success float-end",
-                    attrs: { type: "button" },
+                },
+                [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.comment[key],
+                        expression: "comment[key]",
+                      },
+                    ],
+                    staticClass: "form-control py-2",
+                    attrs: {
+                      type: "text",
+                      placeholder: "Escreva um comentário...",
+                    },
+                    domProps: { value: _vm.comment[key] },
                     on: {
-                      click: function ($event) {
-                        return _vm.postComment(post, key)
+                      input: function ($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.comment, key, $event.target.value)
                       },
                     },
-                  },
-                  [_vm._v("Enviar")]
-                ),
-              ]),
+                  }),
+                ]
+              ),
             ])
           }),
           _vm._v(" "),

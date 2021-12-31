@@ -1,3 +1,4 @@
+import Home from './components/Home'
 import Login from './components/Login'
 import Post from './components/Post'
 import Register from './components/Register'
