@@ -5696,7 +5696,7 @@ var Toast = sweetalert2__WEBPACK_IMPORTED_MODULE_3___default().mixin({
 });
 window.Toast = Toast;
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
-  //mode:'history',
+  mode: 'history',
   routes: _routes__WEBPACK_IMPORTED_MODULE_2__["default"]
 });
 var app = new vue__WEBPACK_IMPORTED_MODULE_0__["default"]({
