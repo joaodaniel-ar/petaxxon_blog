@@ -5,9 +5,8 @@
         </div>
 
         <div class="login-right">
-            <div class="login-form">
+            <form @submit.prevent="loginSubmit" class="login-form">
                 <img src="/images/logo-black.png" alt="Petaxxon" />
-
                 <h1>Login</h1>
 
                 <div class="loginInputEmail">
@@ -19,10 +18,10 @@
                 </div>
 
                 <h4 class="forgot-pass">Esqueceu sua senha?</h4>
-                <button class="btn btn-primary m-3 btn-block" @click="login">Entrar</button>
+                <button class="btn btn-primary m-3 btn-block" type="submit">Entrar</button>
                 <h6 class="m-0">Não possui uma conta?</h6>
                 <router-link to="register" class="btn btn-primary m-3 btn-block">Criar nova conta</router-link>
-            </div>
+            </form>
         </div>
     </div>
 </template>
@@ -39,7 +38,7 @@ export default {
         }   
     },
     methods:{
-        login(){
+        loginSubmit(){
             axios.post('api/login', this.user).then(response=>{
                 if(response.data.status=='success'){
                     let token=response.data.token

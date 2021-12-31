@@ -5271,7 +5271,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -5283,7 +5282,7 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    login: function login() {
+    loginSubmit: function loginSubmit() {
       var _this = this;
 
       axios.post('api/login', this.user).then(function (response) {
@@ -5635,7 +5634,7 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    register: function register() {
+    registerSubmit: function registerSubmit() {
       var _this = this;
 
       axios.post('api/register', this.user).then(function (response) {
@@ -32765,8 +32764,16 @@ var render = function () {
     _vm._v(" "),
     _c("div", { staticClass: "login-right" }, [
       _c(
-        "div",
-        { staticClass: "login-form" },
+        "form",
+        {
+          staticClass: "login-form",
+          on: {
+            submit: function ($event) {
+              $event.preventDefault()
+              return _vm.loginSubmit.apply(null, arguments)
+            },
+          },
+        },
         [
           _c("img", {
             attrs: { src: "/images/logo-black.png", alt: "Petaxxon" },
@@ -32828,7 +32835,7 @@ var render = function () {
             "button",
             {
               staticClass: "btn btn-primary m-3 btn-block",
-              on: { click: _vm.login },
+              attrs: { type: "submit" },
             },
             [_vm._v("Entrar")]
           ),
@@ -33516,8 +33523,16 @@ var render = function () {
     _vm._v(" "),
     _c("div", { staticClass: "login-right" }, [
       _c(
-        "div",
-        { staticClass: "login-form" },
+        "form",
+        {
+          staticClass: "login-form",
+          on: {
+            submit: function ($event) {
+              $event.preventDefault()
+              return _vm.registerSubmit.apply(null, arguments)
+            },
+          },
+        },
         [
           _c("img", {
             attrs: { src: "/images/logo-black.png", alt: "Petaxxon" },
@@ -33602,7 +33617,7 @@ var render = function () {
             "button",
             {
               staticClass: "btn btn-primary m-3 btn-block",
-              on: { click: _vm.register },
+              attrs: { type: "submit" },
             },
             [_vm._v("Cadastrar-se")]
           ),

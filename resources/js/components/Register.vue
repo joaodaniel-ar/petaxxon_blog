@@ -5,7 +5,7 @@
         </div>
 
         <div class="login-right">
-            <div class="login-form">
+            <form @submit.prevent="registerSubmit" class="login-form">
                 <img src="/images/logo-black.png" alt="Petaxxon" />
 
                 <h1>Registrar</h1>
@@ -23,10 +23,10 @@
                 </div>
 
                 <h4 class="forgot-pass">Esqueceu sua senha?</h4>
-                <button class="btn btn-primary m-3 btn-block" @click="register">Cadastrar-se</button>
+                <button class="btn btn-primary m-3 btn-block" type="submit">Cadastrar-se</button>
                 <h6 class="m-0">Já tem uma conta?</h6>
                 <router-link to="login" class="btn btn-primary m-3 btn-block">Entrar</router-link>
-            </div>
+            </form>
         </div>
     </div>
 </template>
@@ -43,7 +43,7 @@ export default {
         }   
     },
     methods:{
-        register(){
+        registerSubmit(){
             axios.post('api/register', this.user).then(response=>{
                 if(response.data.status=='success'){
                     Toast.fire({
