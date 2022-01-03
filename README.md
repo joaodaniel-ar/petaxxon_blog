@@ -1,4 +1,4 @@
-![alt text](https://joaodaniel.space/petaxxonblog.png)
+![alt text](https://joaodaniel.space/petaxxon-blog.png)
 
 #### O projeto consiste em um protótipo de uma rede social, com funções de base essenciais. O usuário é capaz de criar uma conta e posteriormente acessar o painel adm. É possível criar, editar e excluir posts. Também é possível interagir com outros usuários através dos comentários.
 
