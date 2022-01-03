@@ -5464,6 +5464,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -5487,10 +5501,6 @@ __webpack_require__.r(__webpack_exports__);
       _this.user = res.data;
     })["catch"](function (error) {
       _this.error = error.response.data.message;
-
-      if (_this.error == 'Unauthenticated.') {
-        _this.$router.push('/login');
-      }
     });
   },
   methods: {
@@ -5498,7 +5508,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       var token = localStorage.getItem('token');
-      axios.post('api/addcomment?token=' + token + '&id=' + post.id + '&author=' + post.author + '&comment=' + this.comment[key]).then(function (response) {
+      axios.post('api/addcomment?token=' + token + '&id=' + post.id + '&author=' + this.user.id + '&comment=' + this.comment[key]).then(function (response) {
         if (response.data.status == 'error') {
           _this2.errors = response.data.errors;
         } else if (response.data.status == 'success') {
@@ -5593,6 +5603,26 @@ __webpack_require__.r(__webpack_exports__);
             }
           });
         }
+      });
+    },
+    deleteComment: function deleteComment(commentid) {
+      var _this7 = this;
+
+      var token = localStorage.getItem('token');
+      axios["delete"]('api/deletecomment/' + commentid + '?token=' + token).then(function (response) {
+        if (response.data.status == 'success') {
+          Swal.fire('Excluído!', 'O comentário foi excluído.', 'success');
+
+          _this7.getPosts();
+        }
+      });
+    },
+    userLogout: function userLogout() {
+      var _this8 = this;
+
+      var token = localStorage.getItem('token');
+      axios.post('api/logout?token=' + token).then(function (response) {
+        _this8.$router.push('/login');
       });
     }
   },
@@ -5787,7 +5817,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var routes = [{
   path: '/',
-  component: _components_Login__WEBPACK_IMPORTED_MODULE_1__["default"]
+  component: _components_Home__WEBPACK_IMPORTED_MODULE_0__["default"]
 }, {
   path: '/login',
   component: _components_Login__WEBPACK_IMPORTED_MODULE_1__["default"]
@@ -33013,14 +33043,54 @@ var render = function () {
               ]
             ),
             _vm._v(" "),
-            _vm._m(1),
+            _c("div", { staticClass: "row right-box" }, [
+              _vm._m(1),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-3" }, [
+                _c("div", { staticClass: "dropdown text-end" }, [
+                  _vm._m(2),
+                  _vm._v(" "),
+                  _c(
+                    "ul",
+                    {
+                      staticClass: "dropdown-menu text-small",
+                      attrs: { "aria-labelledby": "dropdownUser1" },
+                    },
+                    [
+                      _vm._m(3),
+                      _vm._v(" "),
+                      _vm._m(4),
+                      _vm._v(" "),
+                      _vm._m(5),
+                      _vm._v(" "),
+                      _c("li", [
+                        _c(
+                          "a",
+                          {
+                            staticClass: "dropdown-item",
+                            attrs: { href: "#" },
+                            on: {
+                              click: function ($event) {
+                                $event.preventDefault()
+                                return _vm.userLogout.apply(null, arguments)
+                              },
+                            },
+                          },
+                          [_vm._v("Sair")]
+                        ),
+                      ]),
+                    ]
+                  ),
+                ]),
+              ]),
+            ]),
           ]
         ),
       ]),
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "row m-3 main-content" }, [
-      _vm._m(2),
+      _vm._m(6),
       _vm._v(" "),
       _c(
         "div",
@@ -33391,7 +33461,79 @@ var render = function () {
                     { key: comments.id, staticClass: "list-group" },
                     [
                       _c("li", { staticClass: "list-group-item" }, [
-                        _vm._v(_vm._s(comments.comment)),
+                        _c("p", { staticClass: "float-start me-2" }, [
+                          _vm._v(_vm._s(comments.comment)),
+                        ]),
+                        _vm._v(" "),
+                        comments.user_id == _vm.user.id
+                          ? _c("div", { staticClass: "float-start" }, [
+                              _c("div", { staticClass: "dropdown" }, [
+                                _c(
+                                  "a",
+                                  {
+                                    staticClass: "actions-btn",
+                                    attrs: {
+                                      href: "#",
+                                      id: "dropdownMenuButton1",
+                                      "data-bs-toggle": "dropdown",
+                                      "aria-expanded": "false",
+                                    },
+                                  },
+                                  [
+                                    _c(
+                                      "svg",
+                                      {
+                                        staticClass: "bi bi-three-dots",
+                                        attrs: {
+                                          xmlns: "http://www.w3.org/2000/svg",
+                                          width: "12",
+                                          height: "12",
+                                          fill: "currentColor",
+                                          viewBox: "0 0 16 16",
+                                        },
+                                      },
+                                      [
+                                        _c("path", {
+                                          attrs: {
+                                            d: "M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z",
+                                          },
+                                        }),
+                                      ]
+                                    ),
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "ul",
+                                  {
+                                    staticClass: "dropdown-menu",
+                                    attrs: {
+                                      "aria-labelledby": "dropdownMenuButton1",
+                                    },
+                                  },
+                                  [
+                                    _c("li", [
+                                      _c(
+                                        "a",
+                                        {
+                                          staticClass: "dropdown-item",
+                                          attrs: { href: "#" },
+                                          on: {
+                                            click: function ($event) {
+                                              return _vm.deleteComment(
+                                                comments.id
+                                              )
+                                            },
+                                          },
+                                        },
+                                        [_vm._v("Excluir")]
+                                      ),
+                                    ]),
+                                  ]
+                                ),
+                              ]),
+                            ])
+                          : _vm._e(),
                       ]),
                     ]
                   )
@@ -33460,7 +33602,7 @@ var render = function () {
         2
       ),
       _vm._v(" "),
-      _vm._m(3),
+      _vm._m(7),
     ]),
   ])
 }
@@ -33491,84 +33633,72 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row right-box" }, [
-      _c("div", { staticClass: "col-9" }, [
-        _c("form", { staticClass: "col-12 col-lg-auto mb-3 mb-lg-0" }, [
-          _c("input", {
-            staticClass: "form-control",
-            attrs: {
-              type: "search",
-              placeholder: "Pesquisar...",
-              "aria-label": "Search",
-            },
-          }),
-        ]),
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-3" }, [
-        _c("div", { staticClass: "dropdown text-end" }, [
-          _c(
-            "a",
-            {
-              staticClass:
-                "d-block link-dark text-decoration-none dropdown-toggle",
-              attrs: {
-                href: "#",
-                id: "dropdownUser1",
-                "data-bs-toggle": "dropdown",
-                "aria-expanded": "false",
-              },
-            },
-            [
-              _c("img", {
-                staticClass: "rounded-circle",
-                attrs: {
-                  src: "https://github.com/mdo.png",
-                  alt: "mdo",
-                  width: "32",
-                  height: "32",
-                },
-              }),
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "ul",
-            {
-              staticClass: "dropdown-menu text-small",
-              attrs: { "aria-labelledby": "dropdownUser1" },
-            },
-            [
-              _c("li", [
-                _c(
-                  "a",
-                  { staticClass: "dropdown-item", attrs: { href: "#" } },
-                  [_vm._v("Perfil")]
-                ),
-              ]),
-              _vm._v(" "),
-              _c("li", [
-                _c(
-                  "a",
-                  { staticClass: "dropdown-item", attrs: { href: "#" } },
-                  [_vm._v("Configurações")]
-                ),
-              ]),
-              _vm._v(" "),
-              _c("li", [_c("hr", { staticClass: "dropdown-divider" })]),
-              _vm._v(" "),
-              _c("li", [
-                _c(
-                  "a",
-                  { staticClass: "dropdown-item", attrs: { href: "#" } },
-                  [_vm._v("Sair")]
-                ),
-              ]),
-            ]
-          ),
-        ]),
+    return _c("div", { staticClass: "col-9" }, [
+      _c("form", { staticClass: "col-12 col-lg-auto mb-3 mb-lg-0" }, [
+        _c("input", {
+          staticClass: "form-control",
+          attrs: {
+            type: "search",
+            placeholder: "Pesquisar...",
+            "aria-label": "Search",
+          },
+        }),
       ]),
     ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "a",
+      {
+        staticClass: "d-block link-dark text-decoration-none dropdown-toggle",
+        attrs: {
+          href: "#",
+          id: "dropdownUser1",
+          "data-bs-toggle": "dropdown",
+          "aria-expanded": "false",
+        },
+      },
+      [
+        _c("img", {
+          staticClass: "rounded-circle",
+          attrs: {
+            src: "https://github.com/mdo.png",
+            alt: "mdo",
+            width: "32",
+            height: "32",
+          },
+        }),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("li", [
+      _c("a", { staticClass: "dropdown-item", attrs: { href: "#" } }, [
+        _vm._v("Perfil"),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("li", [
+      _c("a", { staticClass: "dropdown-item", attrs: { href: "#" } }, [
+        _vm._v("Configurações"),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("li", [_c("hr", { staticClass: "dropdown-divider" })])
   },
   function () {
     var _vm = this

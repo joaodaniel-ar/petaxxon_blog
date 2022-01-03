@@ -4,7 +4,7 @@ import Post from './components/Post'
 import Register from './components/Register'
 
 const routes = [
-    {path:'/', component: Login},
+    {path:'/', component: Home},
     {path:'/login', component: Login},
     {path:'/posts', component: Post},
     {path:'/register', component: Register}

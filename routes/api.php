@@ -22,7 +22,9 @@ Route::group(['middleware'=>'auth'],function(){
     Route::post('createpost','PostController@createpost');
     Route::put('updatepost/{postid}','PostController@updatepost');
     Route::delete('deletepost/{postid}','PostController@deletepost');
+    Route::delete('deletecomment/{commentid}','PostController@deletecomment');
     Route::post('addcomment/','PostController@addcomment');
+    Route::post('logout','UserController@logout');
 });
 
 Route::get('getposts','PostController@getposts');

@@ -32,7 +32,7 @@ class PostController extends Controller
         $validator = Validator::make($request->all(), [
             'id' => 'required|min:1',
             'author' => 'required|min:1',
-            'comment' => 'required|min:3'
+            'comment' => 'required|min:1'
         ]);
 
         if ($validator->fails()) {
@@ -74,6 +74,14 @@ class PostController extends Controller
         if($post->delete());
         {
         return response()->json(['status'=>'success','data'=>$post]);
+        }
+    }
+
+    public function deletecomment($commentid){
+        $comment=Comments::find($commentid);
+        if($comment->delete());
+        {
+        return response()->json(['status'=>'success','data'=>$comment]);
         }
     }
 }

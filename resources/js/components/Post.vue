@@ -29,7 +29,7 @@
                                     <li><a class="dropdown-item" href="#">Perfil</a></li>
                                     <li><a class="dropdown-item" href="#">Configurações</a></li>
                                     <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item" href="#">Sair</a></li>
+                                    <li><a class="dropdown-item" href="#" @click.prevent="userLogout">Sair</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -122,7 +122,21 @@
 
                     <div class="comments-box">
                         <ul class="list-group" v-for="comments in post.comments" :key="comments.id">
-                            <li class="list-group-item">{{comments.comment}}</li>
+                            <li class="list-group-item">
+                                <p class="float-start me-2">{{comments.comment}}</p>
+                                <div class="float-start" v-if="comments.user_id==user.id">
+                                    <div class="dropdown">
+                                        <a href="#" class="actions-btn" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                                                <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+                                            </svg>
+                                        </a>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                            <li><a href="#" class="dropdown-item" @click="deleteComment(comments.id)">Excluir</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </li>
                         </ul>
                     </div>
 
@@ -165,15 +179,12 @@ export default {
             this.user = res.data
         }).catch((error)=>{
             this.error = error.response.data.message
-            if(this.error == 'Unauthenticated.'){
-                this.$router.push('/login')
-            }
         })
     },
     methods:{
         postComment(post, key){
             let token=localStorage.getItem('token')
-            axios.post('api/addcomment?token='+token+'&id='+post.id+'&author='+post.author+'&comment='+this.comment[key]).then(response=>{
+            axios.post('api/addcomment?token='+token+'&id='+post.id+'&author='+this.user.id+'&comment='+this.comment[key]).then(response=>{
                 if(response.data.status == 'error'){
                     this.errors = response.data.errors
                 } else if(response.data.status == 'success'){
@@ -260,6 +271,25 @@ export default {
                         }
                     })
                 }
+            })
+        },
+        deleteComment(commentid){
+            let token=localStorage.getItem('token')
+            axios.delete('api/deletecomment/'+commentid+'?token='+token).then(response=>{
+                if(response.data.status=='success'){
+                    Swal.fire(
+                        'Excluído!',
+                        'O comentário foi excluído.',
+                        'success'
+                    )
+                    this.getPosts()
+                }
+            })
+        },
+        userLogout(){
+            let token=localStorage.getItem('token')
+            axios.post('api/logout?token='+token).then(response=>{
+                this.$router.push('/login')
             })
         }
     },
