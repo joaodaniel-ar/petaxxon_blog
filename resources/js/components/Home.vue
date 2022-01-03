@@ -32,7 +32,6 @@
 
                 <div  v-for="post in posts.data" :key="post.id" class="my-3">
                     <h4>{{post.title}}</h4>
-
                     <p>{{post.body}}</p>
 
                     <div class="comments-box">
