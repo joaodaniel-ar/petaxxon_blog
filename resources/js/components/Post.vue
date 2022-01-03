@@ -3,15 +3,16 @@
         <header class="p-3 mb-3 border-bottom">
             <div class="container">
                 <div class="d-flex flex-wrap align-items-center header-main-box">
-                    <a href="/" class="logo d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none">
-                        <img src="/images/logo-black.png" alt="Petaxxon" width="200"/>
-                    </a>
 
                     <ul class="nav col-12 col-lg-auto mb-2 justify-content-center mb-md-0">
                         <li><router-link to="login" class="nav-link px-2 link-dark">Login</router-link></li>
                         <li><router-link to="register" class="nav-link px-2 link-dark">Registrar</router-link></li>
                         <li><router-link to="posts" class="nav-link px-2 link-dark">Posts</router-link></li>
                     </ul>
+
+                    <a href="/" class="logo d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none">
+                        <img src="/images/logo-black.png" alt="Petaxxon" width="200"/>
+                    </a>
 
                     <div class="row right-box">
                         <div class="col-9">
